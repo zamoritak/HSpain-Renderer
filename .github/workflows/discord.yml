@@ -1,0 +1,14 @@
+name: Notify Discord
+
+on:
+  push:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d '{"content":"Nuevo push en el repo 🚀"}' \
+          https://discord.com/api/webhooks/1500988164649521232/x3PrZLMb2ZXwptvpzNoG2wLL0pAgGpKb0m2yb26u6ttHvaWzYCRtusyTbsghSILBNKDw

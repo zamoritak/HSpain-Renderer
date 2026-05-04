@@ -484,6 +484,14 @@ export class IncomingHeader
     public static USER_FISHING_CANES = 10029;
     public static PESCA_DATA = 10037;
 
+    // Hspain marketplace
+    public static HS_MARKETPLACE_LISTINGS = 10100;
+    public static HS_MARKETPLACE_DASHBOARD = 10101;
+    public static HS_MARKETPLACE_MY_ITEMS = 10102;
+    public static HS_MARKETPLACE_HISTORY = 10103;
+    public static HS_MARKETPLACE_SECURITY_CODE = 10104;
+    public static HS_MARKETPLACE_OFFERS = 10105;
+
     //Furni editor
     public static FURNI_EDITOR_SEARCH_RESULT = 10061;
 	public static FURNI_EDITOR_DETAIL_RESULT = 10042;

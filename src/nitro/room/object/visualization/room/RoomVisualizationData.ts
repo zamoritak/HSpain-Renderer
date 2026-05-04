@@ -1,4 +1,4 @@
-import { IAssetData, IGraphicAssetCollection, IObjectVisualizationData } from '../../../../../api';
+import { IAssetData, IAssetRoomVisualizationData, IGraphicAssetCollection, IObjectVisualizationData } from '../../../../../api';
 import { Disposable } from '../../../../../core';
 import { PlaneMaskManager } from './mask';
 import { FloorRasterizer, LandscapeRasterizer, WallRasterizer } from './rasterizer';
@@ -24,25 +24,38 @@ export class RoomVisualizationData extends Disposable implements IObjectVisualiz
 
     public initialize(asset: IAssetData): boolean
     {
-        if(!asset.roomVisualization) return false;
+        const roomVisualization = (asset.roomVisualization || this.getLegacyRoomVisualization(asset));
 
-        const wallData = asset.roomVisualization.wallData;
+        if(!roomVisualization) return false;
+
+        const wallData = roomVisualization.wallData;
 
         if(wallData) this._wallRasterizer.initialize(wallData);
 
-        const floorData = asset.roomVisualization.floorData;
+        const floorData = roomVisualization.floorData;
 
         if(floorData) this._floorRasterizer.initialize(floorData);
 
-        const landscapeData = asset.roomVisualization.landscapeData;
+        const landscapeData = roomVisualization.landscapeData;
 
         if(landscapeData) this._landscapeRasterizer.initialize(landscapeData);
 
-        const maskData = asset.roomVisualization.maskData;
+        const maskData = roomVisualization.maskData;
 
         if(maskData) this._maskManager.initialize(maskData);
 
         return true;
+    }
+
+    private getLegacyRoomVisualization(asset: IAssetData): IAssetRoomVisualizationData
+    {
+        if(!asset) return null;
+
+        const roomVisualization = (asset as unknown as IAssetRoomVisualizationData);
+
+        if(!roomVisualization.wallData && !roomVisualization.floorData && !roomVisualization.landscapeData && !roomVisualization.maskData) return null;
+
+        return roomVisualization;
     }
 
     protected onDispose(): void

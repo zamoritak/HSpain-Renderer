@@ -485,6 +485,22 @@ export class OutgoingHeader
     public static GET_LATEST_MENTIONS = 10032;
     public static UPDATE_BANNER = 9999;
 
+    // Hspain Marketplace
+    public static HS_MARKETPLACE_SEARCH = 10100;
+    public static HS_MARKETPLACE_POST = 10101;
+    public static HS_MARKETPLACE_BUY = 10102;
+    public static HS_MARKETPLACE_OFFER = 10103;
+    public static HS_MARKETPLACE_CANCEL = 10104;
+    public static HS_MARKETPLACE_UPDATE = 10105;
+    public static HS_MARKETPLACE_HISTORY = 10106;
+    public static HS_MARKETPLACE_GENERATE_CODE = 10107;
+    public static HS_MARKETPLACE_DASHBOARD = 10108;
+    public static HS_MARKETPLACE_UNLINK = 10109;
+    public static HS_MARKETPLACE_ACCEPT_OFFER = 10110;
+    public static HS_MARKETPLACE_REJECT_OFFER = 10111;
+    public static HS_MARKETPLACE_CANCEL_OFFER = 10112;
+    public static HS_MARKETPLACE_REQUEST_OFFERS = 10113;
+
     // Pesca
     public static PESCA_START_FISHING = 10040;
     public static PESCA_STOP_FISHING = 10050;

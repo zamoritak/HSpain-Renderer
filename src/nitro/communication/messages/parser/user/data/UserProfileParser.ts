@@ -17,7 +17,7 @@ export class UserProfileParser implements IMessageParser
     private _secondsSinceLastVisit: number;
     private _openProfileWindow: boolean;
     private _customBanner: string;
-    private spotifyEnabled: boolean;
+    private _spotifyEnabled: boolean;
     private _spotifyConnected: boolean;
     private _spotifyCurrentlyPlaying: boolean;
     private _spotifyAuthUrl: string;

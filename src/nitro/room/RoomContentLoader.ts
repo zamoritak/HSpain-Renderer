@@ -494,35 +494,34 @@ export class RoomContentLoader implements IFurnitureDataListener, IRoomContentLo
         try
         {
             const response = await fetch(assetUrl);
-            let contentType = 'application/octet-stream';
 
-            if(response.headers.has('Content-Type'))
-            {
-                contentType = response.headers.get('Content-Type');
-            }
+            if(!response.ok) throw new Error();
 
-            switch(contentType)
-            {
-                case 'application/octet-stream': {
-                    const nitroBundle = new NitroBundle(await response.arrayBuffer());
+            const nitroBundle = new NitroBundle(await response.arrayBuffer());
 
-                    await this.processAsset(nitroBundle.baseTexture, (nitroBundle.jsonFile as IAssetData));
+            await this.processAsset(nitroBundle.baseTexture, (nitroBundle.jsonFile as IAssetData));
 
-                    const events = this._events.get(type);
+            const events = this.getOrRemoveEventDispatcher(type, true);
 
-                    if(!events) return;
+            if(!events) return;
 
-                    events.dispatchEvent(new RoomContentLoadedEvent(RoomContentLoadedEvent.RCLE_SUCCESS, type));
-                    break;
-                }
-                default:
-                    throw new Error();
-            }
+            events.dispatchEvent(new RoomContentLoadedEvent(RoomContentLoadedEvent.RCLE_SUCCESS, type));
         }
 
         catch (err)
         {
+            NitroLogger.error('Failed to download room asset', type, assetUrl, err);
+
+            this.getOrRemoveEventDispatcher(type, true);
+
             events.dispatchEvent(new RoomContentLoadedEvent(RoomContentLoadedEvent.RCLE_FAILURE, type));
+        }
+
+        finally
+        {
+            const index = this._pendingContentTypes.indexOf(type);
+
+            if(index >= 0) this._pendingContentTypes.splice(index, 1);
         }
     }
 

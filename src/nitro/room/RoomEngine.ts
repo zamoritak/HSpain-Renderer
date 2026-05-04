@@ -362,25 +362,37 @@ export class RoomEngine extends NitroManager implements IRoomEngine, IRoomCreato
 
         const logic = (roomObject && roomObject.logic as RoomLogic) || null;
 
+        if(!roomObject)
+        {
+            NitroLogger.warn(`Failed to create room object during setup for room ${ roomId }.`);
+        }
+        else if(!logic)
+        {
+            NitroLogger.warn(`Room logic unavailable during setup for room ${ roomId }, queuing room updates on the room object.`);
+        }
+
         if(logic)
         {
             logic.initialize(roomMap);
+        }
 
+        if(roomObject)
+        {
             if(floorType)
             {
-                logic.processUpdateMessage(new ObjectRoomUpdateMessage(ObjectRoomUpdateMessage.ROOM_FLOOR_UPDATE, floorType));
+                roomObject.processUpdateMessage(new ObjectRoomUpdateMessage(ObjectRoomUpdateMessage.ROOM_FLOOR_UPDATE, floorType));
                 instance.model.setValue(RoomObjectVariable.ROOM_FLOOR_TYPE, floorType);
             }
 
             if(wallType)
             {
-                logic.processUpdateMessage(new ObjectRoomUpdateMessage(ObjectRoomUpdateMessage.ROOM_WALL_UPDATE, wallType));
+                roomObject.processUpdateMessage(new ObjectRoomUpdateMessage(ObjectRoomUpdateMessage.ROOM_WALL_UPDATE, wallType));
                 instance.model.setValue(RoomObjectVariable.ROOM_WALL_TYPE, wallType);
             }
 
             if(landscapeType)
             {
-                logic.processUpdateMessage(new ObjectRoomUpdateMessage(ObjectRoomUpdateMessage.ROOM_LANDSCAPE_UPDATE, landscapeType));
+                roomObject.processUpdateMessage(new ObjectRoomUpdateMessage(ObjectRoomUpdateMessage.ROOM_LANDSCAPE_UPDATE, landscapeType));
                 instance.model.setValue(RoomObjectVariable.ROOM_LANDSCAPE_TYPE, landscapeType);
             }
         }
@@ -403,7 +415,10 @@ export class RoomEngine extends NitroManager implements IRoomEngine, IRoomCreato
                     const maskId = 'door_' + doorIndex;
                     const maskLocation = new Vector3d(doorX, doorY, doorZ);
 
-                    logic.processUpdateMessage(new ObjectRoomMaskUpdateMessage(ObjectRoomMaskUpdateMessage.ADD_MASK, maskId, maskType, maskLocation, ObjectRoomMaskUpdateMessage.HOLE));
+                    if(roomObject)
+                    {
+                        roomObject.processUpdateMessage(new ObjectRoomMaskUpdateMessage(ObjectRoomMaskUpdateMessage.ADD_MASK, maskId, maskType, maskLocation, ObjectRoomMaskUpdateMessage.HOLE));
+                    }
 
                     if((doorDir === 90) || (doorDir === 180))
                     {

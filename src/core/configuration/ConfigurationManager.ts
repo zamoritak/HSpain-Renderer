@@ -61,7 +61,8 @@ export class ConfigurationManager extends NitroManager implements IConfiguration
     {
         if(!data) return;
 
-        if(NitroConfiguration.parseConfiguration(data))
+        // Later config files should be able to override previously loaded keys.
+        if(NitroConfiguration.parseConfiguration(data, true))
         {
             const index = this._pendingUrls.indexOf(url);
 
